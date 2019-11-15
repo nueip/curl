@@ -25,9 +25,6 @@ class Crawler
         CURLOPT_RETURNTRANSFER => true,
         // close ssl verify
         CURLOPT_SSL_VERIFYPEER => false,
-        // set cookie
-        CURLOPT_COOKIEFILE => '/tmp/NueipCrawlerSession',
-        CURLOPT_COOKIEJAR => '/tmp/NueipCrawlerSession',
         CURLOPT_ENCODING => '',
         CURLOPT_MAXREDIRS => 10,
         CURLOPT_TIMEOUT => 30,
@@ -53,6 +50,21 @@ class Crawler
     public static function setCurlOpt(array $opt)
     {
         self::$defCurlOpt = $opt + self::$defCurlOpt;
+    }
+
+    /**
+     * Init cookie file
+     *
+     * @return string
+     */
+    public static function initCookie()
+    {
+        $cookieFile = tempnam(sys_get_temp_dir(), 'NueipCrawler');
+
+        self::setCurlOpt([
+            CURLOPT_COOKIEFILE => $cookieFile,
+            CURLOPT_COOKIEJAR => $cookieFile,
+        ]);
     }
 
     /**
