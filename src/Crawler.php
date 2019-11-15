@@ -2,6 +2,14 @@
 
 namespace nueip\curl;
 
+/**
+ * Crawler
+ *
+ * @version  0.1.0
+ * @author   Gunter Chou
+ *
+ * @see      https://github.com/nueip/curl
+ */
 class Crawler
 {
     /**
