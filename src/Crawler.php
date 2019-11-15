@@ -30,7 +30,7 @@ class Crawler
     /**
      * Get curl default option
      *
-     * @param array $opt
+     * @return array $opt
      */
     public static function getCurlOpt()
     {
@@ -50,8 +50,9 @@ class Crawler
     /**
      * curl post data
      *
-     * @param string $url
-     * @param array  $data
+     * @param  string $url
+     * @param  array  $data
+     * @return string $response
      */
     public static function post(string $url, array $data)
     {
@@ -83,7 +84,8 @@ class Crawler
     /**
      * curl get data
      *
-     * @param string $url
+     * @param  string $url
+     * @return string $response
      */
     public static function get(string $url)
     {
