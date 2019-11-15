@@ -1,0 +1,26 @@
+{
+    "name": "nueip/curl",
+    "description": "NuEIP Curl.",
+    "homepage": "https://github.com/nueip/curl",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "RD Team",
+            "email": "nueip945ad@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "nueip\\curl\\": "src/"}
+    },
+    "autoload-dev": {
+        "psr-4": { "nueip\\curl\\tests\\": "tests/"}
+    },
+    "minimum-stability": "stable",
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "require": {
+        "php": "^7.0"
+    }
+}
