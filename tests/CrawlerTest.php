@@ -42,4 +42,27 @@ class CrawlerTest extends TestCase
         $this->assertFileExists($filePath);
         $this->assertFileIsWritable($filePath);
     }
+
+    /**
+     * test Set cookies value
+     */
+    public function testSetCookie()
+    {
+        // 設定的 Cookie 變數
+        $cookieArr = [
+            'name' => 'admin',
+            'start' => '2019-10-01',
+            'end' => '2019-11-19',
+        ];
+
+        // 預期 轉換結果
+        $cookieStr = 'name=admin;start=2019-10-01;end=2019-11-19';
+
+        Crawler::initCookie();
+        Crawler::setCookie($cookieArr);
+
+        $opt = Crawler::getCurlOpt();
+
+        $this->assertEquals($opt[CURLOPT_COOKIE], $cookieStr);
+    }
 };
