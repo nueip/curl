@@ -68,6 +68,24 @@ class Crawler
     }
 
     /**
+     * Set Cookie value
+     *
+     * @param array $data
+     * @return void
+     */
+    public static function setCookie(array $data)
+    {
+        $str = [];
+        foreach ($data as $cookieName => $value) {
+            $str[] = "$cookieName=$value";
+        }
+
+        self::setCurlOpt([
+            CURLOPT_COOKIE => implode(';', $str),
+        ]);
+    }
+
+    /**
      * curl post data
      *
      * @param  string $url
