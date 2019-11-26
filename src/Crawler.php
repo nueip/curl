@@ -5,7 +5,7 @@ namespace nueip\curl;
 /**
  * Crawler
  *
- * @version  0.2.0
+ * @version  0.2.3
  * @author   Gunter Chou
  *
  * @see      https://github.com/nueip/curl
