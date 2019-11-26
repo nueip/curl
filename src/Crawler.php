@@ -86,13 +86,47 @@ class Crawler
     }
 
     /**
+     * 透過設定檔 執行爬蟲
+     *
+     * @param  CrawlerConfig $conf
+     * @throws Exception
+     * @return void
+     */
+    public static function run(CrawlerConfig $conf)
+    {
+        self::setCurlOpt($conf->getCurlOpt());
+        self::setCookie($conf->getCookies());
+
+        switch ($conf->getType()) {
+            case 'get':
+                $result = self::get($conf->getUrl(), $conf->getData());
+                break;
+            case 'post':
+                $result = self::post($conf->getUrl(), $conf->getData());
+                break;
+            case 'put':
+                $result = self::put($conf->getUrl(), $conf->getData());
+                break;
+            case 'delete':
+                $result = self::delete($conf->getUrl(), $conf->getData());
+                break;
+            default:
+                throw new Exception('Request type is not found', 400);
+                break;
+        }
+
+        return $result;
+    }
+
+    /**
      * curl post data
      *
      * @param  string $url
      * @param  array  $data
+     * @param  string $method
      * @return string $response
      */
-    public static function post(string $url, array $data)
+    public static function post(string $url, array $data, string $method = 'POST')
     {
         // create curl resource
         $curl = curl_init($url);
@@ -100,7 +134,7 @@ class Crawler
         // set curl option
         $opt = [
             CURLOPT_POST => true,
-            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_POSTFIELDS => http_build_query($data),
             CURLOPT_HTTPHEADER => [
                 'Cache-Control: no-cache',
@@ -125,8 +159,11 @@ class Crawler
      * @param  string $url
      * @return string $response
      */
-    public static function get(string $url)
+    public static function get(string $url, array $data = [])
     {
+        // 自動帶 url 參數
+        count($data) && $url .= '?' . http_build_query($data);
+
         $curl = curl_init($url);
 
         // set curl option
@@ -147,5 +184,29 @@ class Crawler
         curl_close($curl);
 
         return $response;
+    }
+
+    /**
+     * curl put data
+     *
+     * @param string $url
+     * @param array $data
+     * @return string $response
+     */
+    public static function put(string $url, array $data)
+    {
+        return self::post($url, $data, 'PUT');
+    }
+
+    /**
+     * curl delete data
+     *
+     * @param string $url
+     * @param array $data
+     * @return string $response
+     */
+    public static function delete(string $url, array $data)
+    {
+        return self::post($url, $data, 'DELETE');
     }
 };
