@@ -2,6 +2,8 @@
 
 namespace nueip\curl;
 
+use Exception;
+
 /**
  * Crawler
  *
@@ -132,7 +134,7 @@ class Crawler
         $curl = curl_init($url);
 
         // set curl option
-        $opt = [
+        $opt = array_replace_recursive([
             CURLOPT_POST => true,
             CURLOPT_CUSTOMREQUEST => $method,
             CURLOPT_POSTFIELDS => http_build_query($data),
@@ -140,7 +142,7 @@ class Crawler
                 'Cache-Control: no-cache',
                 'Content-Type: application/x-www-form-urlencoded',
             ],
-        ] + self::$defCurlOpt;
+        ], self::$defCurlOpt);
 
         curl_setopt_array($curl, $opt);
 
@@ -167,13 +169,13 @@ class Crawler
         $curl = curl_init($url);
 
         // set curl option
-        $opt = [
+        $opt = array_replace_recursive([
             CURLOPT_CUSTOMREQUEST => 'GET',
             CURLOPT_POSTFIELDS => '',
             CURLOPT_HTTPHEADER => [
                 'Cache-Control: no-cache',
             ],
-        ] + self::$defCurlOpt;
+        ], self::$defCurlOpt);
 
         curl_setopt_array($curl, $opt);
 
