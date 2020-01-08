@@ -35,6 +35,13 @@ class Crawler
     ];
 
     /**
+     * Curl once option
+     *
+     * @var array
+     */
+    protected static $onceOpt = [];
+
+    /**
      * Get curl default option
      *
      * @return array $opt
@@ -88,7 +95,7 @@ class Crawler
     }
 
     /**
-     * 透過設定檔 執行爬蟲
+     * Run curl via config
      *
      * @param  CrawlerConfig $conf
      * @throws Exception
@@ -101,6 +108,7 @@ class Crawler
 
         $url = $conf->getConfig('url');
         $data = $conf->getConfig('data');
+        $filePath = $conf->getConfig('filePath');
 
         switch ($conf->getConfig('type')) {
             case 'get':
@@ -115,12 +123,53 @@ class Crawler
             case 'delete':
                 $result = self::delete($url, $data);
                 break;
+            case 'downloadget':
+                $result = self::download($url, $data, 'GET', $filePath);
+                break;
+            case 'downloadpost':
+                $result = self::download($url, $data, 'POST', $filePath);
+                break;
             default:
                 throw new Exception('Request type is not found', 400);
                 break;
         }
 
         return $result;
+    }
+
+    /**
+     * Curl download file
+     *
+     * @param string $url
+     * @param array $data
+     * @param string $method
+     * @param string $filePath
+     * @return string $filePath
+     */
+    public static function download(string $url, array $data, string $method = 'GET', string $filePath = null)
+    {
+        // Set default temp file path
+        $filePath = $filePath ?? tempnam(sys_get_temp_dir(), 'NueipCrawlerTmpFile');
+
+        // Open file
+        $fp = fopen($filePath, 'w');
+
+        // Extra curlOpt
+        self::$onceOpt = [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_FILE => $fp,
+        ];
+
+        if ($method === 'GET') {
+            self::get($url, $data);
+        } else {
+            self::post($url, $data);
+        }
+
+        // init
+        self::$onceOpt = [];
+
+        return $filePath;
     }
 
     /**
@@ -145,7 +194,7 @@ class Crawler
                 'Cache-Control: no-cache',
                 'Content-Type: application/x-www-form-urlencoded',
             ],
-        ], self::$defCurlOpt);
+        ], self::$defCurlOpt, self::$onceOpt);
 
         curl_setopt_array($curl, $opt);
 
@@ -178,7 +227,7 @@ class Crawler
             CURLOPT_HTTPHEADER => [
                 'Cache-Control: no-cache',
             ],
-        ], self::$defCurlOpt);
+        ], self::$defCurlOpt, self::$onceOpt);
 
         curl_setopt_array($curl, $opt);
 

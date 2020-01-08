@@ -24,6 +24,7 @@ class CrawlerConfig
         'data' => [],
         'cookies' => [],
         'curlOpt' => [],
+        'filePath' => '',
     ];
 
     /**
@@ -36,6 +37,8 @@ class CrawlerConfig
         'post' => '',
         'put' => '',
         'delete' => '',
+        'downloadget' => '',
+        'downloadpost' => '',
     ];
 
     /**
@@ -129,6 +132,17 @@ class CrawlerConfig
     public function setCurlOpt(array $curlOpt)
     {
         $this->config['curlOpt'] = $curlOpt;
+    }
+
+    /**
+     * Set FilePath
+     *
+     * @param string $filePath
+     * @return void
+     */
+    public function setFilePath(string $filePath)
+    {
+        $this->config['filePath'] = $filePath;
     }
 
     /**
