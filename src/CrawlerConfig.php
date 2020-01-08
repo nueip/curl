@@ -49,13 +49,13 @@ class CrawlerConfig
     public function __construct(array $config = [])
     {
         if (count($config)) {
-            // 確保資料正確
+            // make sure correct data
             $config = array_intersect_key($config + $this->config, $this->config);
 
-            foreach ($config as $key => $value) {
-                // 建立執行的 function Name
-                $setFuncName = 'set' . ucfirst($key);
-                // 依資料執行對應 function
+            foreach ($config as $varName => $value) {
+                // Building will be executing function Name
+                $setFuncName = 'set' . ucfirst($varName);
+                // access data exe function
                 call_user_func_array([$this, $setFuncName], [$value]);
             }
         }

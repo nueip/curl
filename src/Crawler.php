@@ -215,7 +215,7 @@ class Crawler
      */
     public static function get(string $url, array $data = [])
     {
-        // 自動帶 url 參數
+        // combine data to url
         count($data) && $url .= '?' . http_build_query($data);
 
         $curl = curl_init($url);
