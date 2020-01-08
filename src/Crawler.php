@@ -96,21 +96,24 @@ class Crawler
      */
     public static function run(CrawlerConfig $conf)
     {
-        self::setCurlOpt($conf->getCurlOpt());
-        self::setCookie($conf->getCookies());
+        self::setCurlOpt($conf->getConfig('curlOpt'));
+        self::setCookie($conf->getConfig('cookies'));
 
-        switch ($conf->getType()) {
+        $url = $conf->getConfig('url');
+        $data = $conf->getConfig('data');
+
+        switch ($conf->getConfig('type')) {
             case 'get':
-                $result = self::get($conf->getUrl(), $conf->getData());
+                $result = self::get($url, $data);
                 break;
             case 'post':
-                $result = self::post($conf->getUrl(), $conf->getData());
+                $result = self::post($url, $data);
                 break;
             case 'put':
-                $result = self::put($conf->getUrl(), $conf->getData());
+                $result = self::put($url, $data);
                 break;
             case 'delete':
-                $result = self::delete($conf->getUrl(), $conf->getData());
+                $result = self::delete($url, $data);
                 break;
             default:
                 throw new Exception('Request type is not found', 400);

@@ -43,7 +43,7 @@ class CrawlerConfig
      *
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
         if (count($config)) {
             // 確保資料正確
@@ -132,68 +132,12 @@ class CrawlerConfig
     }
 
     /**
-     * *******************************************************
-     * ******************* Get Function **********************
-     * *******************************************************
-     */
-
-    /**
-     * Get Title
+     * Get Config
      *
-     * @return string
+     * @return string|array
      */
-    public function getTitle()
+    public function getConfig($key = null)
     {
-        return $this->config['title'];
-    }
-
-    /**
-     * Get Type
-     *
-     * @return string
-     */
-    public function getType()
-    {
-        return $this->config['type'];
-    }
-
-    /**
-     * Get Url
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->config['url'];
-    }
-
-    /**
-     * Get Data
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->config['data'];
-    }
-
-    /**
-     * Get Cookie
-     *
-     * @return array
-     */
-    public function getCookies()
-    {
-        return $this->config['cookies'];
-    }
-
-    /**
-     * Get CurlOpt
-     *
-     * @return array
-     */
-    public function getCurlOpt()
-    {
-        return $this->config['curlOpt'];
+        return isset($key) ? ($this->config[$key] ?? null) : $this->config;
     }
 }
