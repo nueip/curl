@@ -24,6 +24,7 @@ class CrawlerConfig
         'data' => [],
         'cookies' => [],
         'curlOpt' => [],
+        'filePath' => '',
     ];
 
     /**
@@ -36,6 +37,8 @@ class CrawlerConfig
         'post' => '',
         'put' => '',
         'delete' => '',
+        'downloadget' => '',
+        'downloadpost' => '',
     ];
 
     /**
@@ -43,16 +46,16 @@ class CrawlerConfig
      *
      * @param array $config
      */
-    public function __construct(array $config)
+    public function __construct(array $config = [])
     {
         if (count($config)) {
-            // 確保資料正確
+            // make sure correct data
             $config = array_intersect_key($config + $this->config, $this->config);
 
-            foreach ($config as $key => $value) {
-                // 建立執行的 function Name
-                $setFuncName = 'set' . ucfirst($key);
-                // 依資料執行對應 function
+            foreach ($config as $varName => $value) {
+                // Building will be executing function Name
+                $setFuncName = 'set' . ucfirst($varName);
+                // access data exe function
                 call_user_func_array([$this, $setFuncName], [$value]);
             }
         }
@@ -132,68 +135,23 @@ class CrawlerConfig
     }
 
     /**
-     * *******************************************************
-     * ******************* Get Function **********************
-     * *******************************************************
-     */
-
-    /**
-     * Get Title
+     * Set FilePath
      *
-     * @return string
+     * @param string $filePath
+     * @return void
      */
-    public function getTitle()
+    public function setFilePath(string $filePath)
     {
-        return $this->config['title'];
+        $this->config['filePath'] = $filePath;
     }
 
     /**
-     * Get Type
+     * Get Config
      *
-     * @return string
+     * @return string|array
      */
-    public function getType()
+    public function getConfig($key = null)
     {
-        return $this->config['type'];
-    }
-
-    /**
-     * Get Url
-     *
-     * @return string
-     */
-    public function getUrl()
-    {
-        return $this->config['url'];
-    }
-
-    /**
-     * Get Data
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->config['data'];
-    }
-
-    /**
-     * Get Cookie
-     *
-     * @return array
-     */
-    public function getCookies()
-    {
-        return $this->config['cookies'];
-    }
-
-    /**
-     * Get CurlOpt
-     *
-     * @return array
-     */
-    public function getCurlOpt()
-    {
-        return $this->config['curlOpt'];
+        return isset($key) ? ($this->config[$key] ?? null) : $this->config;
     }
 }
