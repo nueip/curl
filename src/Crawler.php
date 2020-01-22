@@ -129,6 +129,9 @@ class Crawler
             case 'downloadpost':
                 $result = self::download($url, $data, 'POST', $filePath);
                 break;
+            case 'upload':
+                $result = self::upload($url, $data, $filePath);
+                break;
             default:
                 throw new Exception('Request type is not found', 400);
                 break;
@@ -263,4 +266,82 @@ class Crawler
     {
         return self::post($url, $data, 'DELETE');
     }
-};
+
+    /**
+     * curl upload file & post data
+     * 
+     * @property array $data['file']
+     * @param string $url
+     * @param array $data
+     * @param mixed $file
+     * @return string $response
+     */
+    public static function upload(string $url, array $data, $file)
+    {
+
+        list($boundary, $content) = self::multipartFormBuilder($data, $file);
+
+        // Extra curlOpt
+        self::$onceOpt = [
+            CURLOPT_POSTFIELDS => $content,
+            CURLOPT_HTTPHEADER => [
+                'Cache-Control: no-cache',
+                "Content-Type: multipart/form-data; boundary={$boundary}",
+            ],
+        ];
+
+        $result = self::post($url, []);
+
+        self::$onceOpt = [];
+
+        return $result;
+    }
+
+    /**
+     * Multipart form data build 
+     *
+     * @param array $data
+     * @param array $files
+     * @param string $boundary border
+     * @return void
+     */
+    private static function multipartFormBuilder($data, $files, $boundary = null)
+    {
+        // Eof string
+        $eof = "\r\n";
+        // border identify
+        $boundary = $boundary ?? uniqid();
+        // border format
+        $boundaryPlus = "--{$boundary}";
+
+        $content = '';
+
+        // file 
+        $files = is_array($files) ? $files : [];
+        foreach ($files as $field => $path) {
+            $filename = basename($path);
+            $fileType = mime_content_type($path);
+            $fileContent = file_get_contents($path);
+
+            $content .= "{$boundaryPlus}{$eof}";
+            $content .= "Content-Disposition: form-data; name='{$field}'; filename='{$filename}'{$eof}";
+            $content .= "Content-Type: {$fileType}{$eof}";
+
+            // file content write
+            $content .= "{$eof}{$fileContent}{$eof}";
+        }
+
+        // data
+        foreach ($data as $field => $value) {
+            $content .= "{$boundaryPlus}{$eof}";
+            $content .= "Content-Disposition: form-data; name='{$field}'{$eof}";
+
+            // arg value write
+            $content .= "{$eof}{$value}{$eof}";
+        }
+
+        $content .= "{$boundaryPlus}--";
+
+        return [$boundary, $content];
+    }
+}

@@ -24,7 +24,7 @@ class CrawlerConfig
         'data' => [],
         'cookies' => [],
         'curlOpt' => [],
-        'filePath' => '',
+        'filePath' => null,
     ];
 
     /**
@@ -39,6 +39,7 @@ class CrawlerConfig
         'delete' => '',
         'downloadget' => '',
         'downloadpost' => '',
+        'upload' => '',
     ];
 
     /**
@@ -137,7 +138,7 @@ class CrawlerConfig
     /**
      * Set FilePath
      *
-     * @param string $filePath
+     * @param string|array $filePath
      * @return void
      */
     public function setFilePath(string $filePath)
