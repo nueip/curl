@@ -141,7 +141,7 @@ class CrawlerConfig
      * @param string|array $filePath
      * @return void
      */
-    public function setFilePath(string $filePath)
+    public function setFilePath($filePath)
     {
         $this->config['filePath'] = $filePath;
     }
