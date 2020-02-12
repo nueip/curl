@@ -4,6 +4,7 @@ namespace nueip\curl\tests;
 
 use nueip\curl\Crawler;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 class CrawlerTest extends TestCase
 {
@@ -64,5 +65,50 @@ class CrawlerTest extends TestCase
         $opt = Crawler::getCurlOpt();
 
         $this->assertEquals($opt[CURLOPT_COOKIE], $cookieStr);
+    }
+
+    /**
+     * test Build multipart form
+     *
+     * @return void
+     */
+    public function testMultipartFormBuilder()
+    {
+        $content = '';
+
+        $boundary = 'PHPUnit';
+
+        $file = [
+            'uploadfile' => 'tests/emptyTest.txt',
+        ];
+
+        $data = [
+            'ID' => '487',
+            'Type' => 'import',
+        ];
+
+        $crawler = new Crawler();
+
+        $reflection = new ReflectionClass(get_class($crawler));
+
+        $method = $reflection->getMethod('multipartFormBuilder');
+        $method->setAccessible(true);
+        list($buildBoundary, $buildContent) = $method->invokeArgs($crawler, [$data, $file, $boundary]);
+
+        $eof = "\r\n";
+        $content .= "--{$boundary}{$eof}";
+        $content .= "Content-Disposition: form-data; name='uploadfile'; filename='emptyTest.txt'{$eof}";
+        $content .= "Content-Type: text/plain{$eof}{$eof}";
+        $content .= "Testing{$eof}";
+        $content .= "--{$boundary}{$eof}";
+        $content .= "Content-Disposition: form-data; name='ID'{$eof}";
+        $content .= "{$eof}487{$eof}";
+        $content .= "--{$boundary}{$eof}";
+        $content .= "Content-Disposition: form-data; name='Type'{$eof}";
+        $content .= "{$eof}import{$eof}";
+        $content .= "--{$boundary}--";
+
+        $this->assertEquals($buildBoundary, $boundary);
+        $this->assertEquals($buildContent, $content);
     }
 };
