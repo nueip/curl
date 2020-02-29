@@ -10,7 +10,7 @@ class CrawlerConfigTest extends TestCase
     protected $defConf;
 
     // set default config
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->defConf = [
             'title' => 'test',
