@@ -9,6 +9,7 @@ use Exception;
  *
  * @version  0.2.3
  * @author   Gunter Chou
+ * @author   Sean Lee
  *
  * @see      https://github.com/nueip/curl
  */
@@ -102,7 +103,7 @@ class Crawler
     /**
      * Set Cookie value
      *
-     * @param array $data
+     * @param  array  $data
      * @return void
      */
     public static function setCookie(array $data)
@@ -166,10 +167,10 @@ class Crawler
     /**
      * Curl download file
      *
-     * @param string $url
-     * @param array $data
-     * @param string $method
-     * @param string $filePath
+     * @param  string $url
+     * @param  array  $data
+     * @param  string $method
+     * @param  string $filePath
      * @return string $filePath
      */
     public static function download(string $url, array $data, string $method = 'GET', string $filePath = null)
@@ -269,8 +270,8 @@ class Crawler
     /**
      * curl put data
      *
-     * @param string $url
-     * @param array $data
+     * @param  string $url
+     * @param  array  $data
      * @return string $response
      */
     public static function put(string $url, array $data)
@@ -281,8 +282,8 @@ class Crawler
     /**
      * curl delete data
      *
-     * @param string $url
-     * @param array $data
+     * @param  string $url
+     * @param  array  $data
      * @return string $response
      */
     public static function delete(string $url, array $data)
@@ -292,11 +293,10 @@ class Crawler
 
     /**
      * curl upload file & post data
-     * 
-     * @property array $data['file']
-     * @param string $url
-     * @param array $data
-     * @param mixed $file
+     *
+     * @param  string $url
+     * @param  array  $data
+     * @param  mixed  $file
      * @return string $response
      */
     public static function upload(string $url, array $data, $file)
@@ -321,11 +321,11 @@ class Crawler
     }
 
     /**
-     * Multipart form data build 
+     * Multipart form data build
      *
-     * @param array $data
-     * @param array $files
-     * @param string $boundary border
+     * @param  array  $data
+     * @param  array  $files
+     * @param  string $boundary border
      * @return void
      */
     private static function multipartFormBuilder($data, $files, $boundary = null)
@@ -339,7 +339,7 @@ class Crawler
 
         $content = '';
 
-        // file 
+        // file
         $files = is_array($files) ? $files : [];
         foreach ($files as $field => $path) {
             $filename = basename($path);
