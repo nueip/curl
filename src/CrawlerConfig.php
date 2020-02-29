@@ -63,12 +63,6 @@ class CrawlerConfig
     }
 
     /**
-     * *******************************************************
-     * ******************* Set Function **********************
-     * *******************************************************
-     */
-
-    /**
      * Set Title
      *
      * @param  string $title
@@ -138,7 +132,7 @@ class CrawlerConfig
     /**
      * Set FilePath
      *
-     * @param string|array $filePath
+     * @param  string|array $filePath
      * @return void
      */
     public function setFilePath($filePath)
