@@ -64,16 +64,19 @@ class Crawler
     /**
      * Init cookie file
      *
+     * @param string $cookieFile
      * @return string
      */
-    public static function initCookie()
+    public static function initCookie($cookieFile = null)
     {
-        $cookieFile = tempnam(sys_get_temp_dir(), 'NueipCrawler');
+        $cookieFile = $cookieFile ?? tempnam(sys_get_temp_dir(), 'NueipCrawler');
 
         self::setCurlOpt([
             CURLOPT_COOKIEFILE => $cookieFile,
             CURLOPT_COOKIEJAR => $cookieFile,
         ]);
+
+        return $cookieFile;
     }
 
     /**
