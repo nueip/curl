@@ -42,6 +42,24 @@ class Crawler
     protected static $onceOpt = [];
 
     /**
+     * CookieFile collect
+     *
+     * @var array
+     */
+    private static $cookieFileCollect = [];
+
+    /**
+     * Destruct
+     */
+    public static function destruct()
+    {
+        // Remove cookie files
+        foreach (self::$cookieFileCollect as $cookiesPath) {
+            unlink($cookiesPath);
+        }
+    }
+
+    /**
      * Get curl default option
      *
      * @return array $opt
@@ -75,6 +93,8 @@ class Crawler
             CURLOPT_COOKIEFILE => $cookieFile,
             CURLOPT_COOKIEJAR => $cookieFile,
         ]);
+
+        self::$cookieFileCollect[] = $cookieFile;
 
         return $cookieFile;
     }
