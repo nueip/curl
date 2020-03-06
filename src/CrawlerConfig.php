@@ -19,6 +19,8 @@ class CrawlerConfig
      */
     protected $config = [
         'title' => '',
+        'site' => '',
+        'uri' => '',
         'url' => '',
         'type' => '',
         'data' => [],
@@ -71,6 +73,28 @@ class CrawlerConfig
     public function setTitle(string $title)
     {
         $this->config['title'] = $title;
+    }
+
+    /**
+     * Set Site
+     *
+     * @param  string $site
+     * @return void
+     */
+    public function setSite(string $site)
+    {
+        $this->config['site'] = preg_replace('/\/$/', '', $site);
+    }
+
+    /**
+     * Set Uri
+     *
+     * @param  string $uri
+     * @return void
+     */
+    public function setUri(string $uri)
+    {
+        $this->config['uri'] = preg_replace('/^\//', '', $uri);;
     }
 
     /**
@@ -148,5 +172,25 @@ class CrawlerConfig
     public function getConfig($key = null)
     {
         return isset($key) ? ($this->config[$key] ?? null) : $this->config;
+    }
+
+    /**
+     * Get Url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        $config = $this->config;
+
+        if (isset($config['url'][0])) {
+            $url = $config['url'];
+        } elseif (isset($config['site'][0])) {
+            $url = implode('/', [$config['site'], $config['uri']]);
+        } else {
+            $url = '';
+        }
+
+        return $url;
     }
 }
