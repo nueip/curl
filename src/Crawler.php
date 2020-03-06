@@ -95,7 +95,7 @@ class Crawler
             CURLOPT_COOKIEJAR => $cookieFile,
         ]);
 
-        self::$cookieFileCollect[] = $cookieFile;
+        self::$cookieFileCollect[basename($cookieFile)] = $cookieFile;
 
         return $cookieFile;
     }
