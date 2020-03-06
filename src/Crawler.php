@@ -130,7 +130,7 @@ class Crawler
         self::setCurlOpt($conf->getConfig('curlOpt'));
         self::setCookie($conf->getConfig('cookies'));
 
-        $url = $conf->getConfig('url');
+        $url = $conf->getUrl();
         $data = $conf->getConfig('data');
         $filePath = $conf->getConfig('filePath');
 

@@ -14,6 +14,8 @@ class CrawlerConfigTest extends TestCase
     {
         $this->defConf = [
             'title' => 'test',
+            'site' => '',
+            'uri' => '',
             'url' => 'https://www.google.com',
             'type' => 'get',
             'data' => [
@@ -40,6 +42,23 @@ class CrawlerConfigTest extends TestCase
         $config = $crawlerConfig->getConfig();
 
         $this->assertEquals($this->defConf, $config);
+    }
+
+    public function testGetUrl()
+    {
+        $this->defConf['site'] = 'https://www.google.com/';
+
+        $this->defConf['uri'] = '/search/something?test=1';
+
+        $url = (new CrawlerConfig($this->defConf))->getUrl();
+
+        $this->assertEquals($url, "https://www.google.com");
+
+        unset($this->defConf['url']);
+
+        $url = (new CrawlerConfig($this->defConf))->getUrl();
+
+        $this->assertEquals($url, "https://www.google.com/search/something?test=1");
     }
 
     /**
