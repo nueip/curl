@@ -101,6 +101,16 @@ class Crawler
     }
 
     /**
+     * Clean cookie file collect array
+     *
+     * @return void
+     */
+    public static function cleanCookieFileCollect()
+    {
+        self::$cookieFileCollect = [];
+    }
+
+    /**
      * Set Cookie value
      *
      * @param  array  $data
