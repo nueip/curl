@@ -7,7 +7,7 @@ use Exception;
 /**
  * Crawler
  *
- * @version  0.2.3
+ * @version  0.3.1
  * @author   Gunter Chou
  * @author   Sean Lee
  *
@@ -67,7 +67,7 @@ class Crawler
      */
     public static function getCurlOpt()
     {
-        return self::$defCurlOpt;
+        return self::$onceOpt;
     }
 
     /**
@@ -77,7 +77,7 @@ class Crawler
      */
     public static function setCurlOpt(array $opt)
     {
-        self::$defCurlOpt = $opt + self::$defCurlOpt;
+        self::$onceOpt = $opt + self::$onceOpt;
     }
 
     /**
@@ -90,10 +90,10 @@ class Crawler
     {
         $cookieFile = $cookieFile ?? tempnam(sys_get_temp_dir(), 'NueipCrawler');
 
-        self::setCurlOpt([
+        self::$defCurlOpt = [
             CURLOPT_COOKIEFILE => $cookieFile,
             CURLOPT_COOKIEJAR => $cookieFile,
-        ]);
+        ] + self::$defCurlOpt;
 
         self::$cookieFileCollect[basename($cookieFile)] = $cookieFile;
 
@@ -195,16 +195,13 @@ class Crawler
         self::$onceOpt = [
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_FILE => $fp,
-        ];
+        ] + self::$onceOpt;
 
         if ($method === 'GET') {
             self::get($url, $data);
         } else {
             self::post($url, $data);
         }
-
-        // init
-        self::$onceOpt = [];
 
         return $filePath;
     }
@@ -238,6 +235,9 @@ class Crawler
         // $response contains the output string
         $response = curl_exec($curl);
 
+        // clear onceOpt
+        self::$onceOpt = [];
+
         // close curl resource to free up system resources
         curl_close($curl);
 
@@ -270,6 +270,9 @@ class Crawler
 
         // $response contains the output string
         $response = curl_exec($curl);
+
+        // clear onceOpt
+        self::$onceOpt = [];
 
         // close curl resource to free up system resources
         curl_close($curl);
@@ -321,11 +324,9 @@ class Crawler
                 'Cache-Control: no-cache',
                 "Content-Type: multipart/form-data; boundary={$boundary}",
             ],
-        ];
+        ] + self::$onceOpt;
 
         $result = self::post($url, []);
-
-        self::$onceOpt = [];
 
         return $result;
     }

@@ -31,9 +31,13 @@ class CrawlerTest extends TestCase
      */
     public function testInitCookie()
     {
-        Crawler::initCookie();
+        $crawler = new Crawler();
 
-        $opt = Crawler::getCurlOpt();
+        $crawler::initCookie();
+
+        $reflection = new ReflectionClass(get_class($crawler));
+
+        $opt = $reflection->getStaticProperties()['defCurlOpt'] ?? null;
 
         $this->assertArrayHasKey(CURLOPT_COOKIEFILE, $opt);
         $this->assertArrayHasKey(CURLOPT_COOKIEJAR, $opt);
