@@ -175,38 +175,6 @@ class Crawler
     }
 
     /**
-     * Curl download file
-     *
-     * @param  string $url
-     * @param  array  $data
-     * @param  string $method
-     * @param  string $filePath
-     * @return string $filePath
-     */
-    public static function download(string $url, array $data, string $method = 'GET', string $filePath = null)
-    {
-        // Set default temp file path
-        $filePath = $filePath ?? tempnam(sys_get_temp_dir(), 'NueipCrawlerTmpFile');
-
-        // Open file
-        $fp = fopen($filePath, 'w');
-
-        // Extra curlOpt
-        self::$onceOpt = [
-            CURLOPT_RETURNTRANSFER => 1,
-            CURLOPT_FILE => $fp,
-        ] + self::$onceOpt;
-
-        if ($method === 'GET') {
-            self::get($url, $data);
-        } else {
-            self::post($url, $data);
-        }
-
-        return $filePath;
-    }
-
-    /**
      * curl post data
      *
      * @param  string $url
@@ -329,6 +297,38 @@ class Crawler
         $result = self::post($url, []);
 
         return $result;
+    }
+
+    /**
+     * Curl download file
+     *
+     * @param  string $url
+     * @param  array  $data
+     * @param  string $method
+     * @param  string $filePath
+     * @return string $filePath
+     */
+    public static function download(string $url, array $data, string $method = 'GET', string $filePath = null)
+    {
+        // Set default temp file path
+        $filePath = $filePath ?? tempnam(sys_get_temp_dir(), 'NueipCrawlerTmpFile');
+
+        // Open file
+        $fp = fopen($filePath, 'w');
+
+        // Extra curlOpt
+        self::$onceOpt = [
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_FILE => $fp,
+        ] + self::$onceOpt;
+
+        if ($method === 'GET') {
+            self::get($url, $data);
+        } else {
+            self::post($url, $data);
+        }
+
+        return $filePath;
     }
 
     /**
