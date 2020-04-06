@@ -22,6 +22,18 @@ class Thead
     protected $childMax = 4;
 
     /**
+     * Setting max running child
+     *
+     * @param integer $childMax
+     * @return Thead
+     */
+    public function setChildMax($childMax)
+    {
+        $this->childMax = intval($childMax);
+        return $this;
+    }
+
+    /**
      * multi process
      *
      * @param  callback $callback
@@ -36,14 +48,17 @@ class Thead
         // 子進程編號
         $childIndex = 0;
 
+        // 當下最大執行數
+        $childMax = $this->childMax;
+
         do {
 
             // 檢查是否還有運算資源
             $haveResource = count($arguments);
 
             if ($haveResource) {
-                // 建立新進程前 暫停 500 ms 防止瞬間大量新增進程
-                usleep(500000);
+                // 建立新進程前 暫停 5 * childMax ms 防止瞬間大量新增進程
+                usleep(5000 * $childMax);
 
                 // 子進程編號
                 $childIndex++;
@@ -70,7 +85,7 @@ class Thead
                  * 當 子進程 大於等於 限制上限 或 無運算資源 時，
                  * 等待 一個子進程 結束後才可繼續。
                  */
-                if ($childCur >= $this->childMax || !$haveResource) {
+                if ($childCur >= $childMax || !$haveResource) {
 
                     // 子進程 狀態
                     $status = null;
