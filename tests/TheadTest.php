@@ -43,13 +43,13 @@ class ThreadTest extends TestCase
 
         $arguments = [];
 
-        foreach (range(0, 8) as $step) {
-            $arguments[] = [random_int(1, 99), random_int(1, 99)];
+        foreach (range(1, 20) as $step) {
+            $arguments[$step] = random_int(1, 99);
         }
 
         $thread = new Thread;
 
-        $thread->multiProcess($addMethod, $arguments);
+        $thread->multiProcess($addMethod, array_chunk($arguments, 2));
 
         $this->assertEquals(1, 1);
     }
