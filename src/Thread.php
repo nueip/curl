@@ -5,14 +5,14 @@ namespace nueip\curl;
 use Exception;
 
 /**
- * Thead
+ * Thread
  *
  * @version  0.0.1
  * @author   Gunter Chou
  *
  * @see      https://github.com/nueip/curl
  */
-class Thead
+class Thread
 {
     /**
      * 最大進程數
@@ -25,7 +25,7 @@ class Thead
      * Setting max running child
      *
      * @param integer $childMax
-     * @return Thead
+     * @return Thread
      */
     public function setChildMax($childMax)
     {

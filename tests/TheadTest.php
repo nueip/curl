@@ -2,11 +2,11 @@
 
 namespace nueip\curl\tests;
 
-use nueip\curl\Thead;
+use nueip\curl\Thread;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-class TheadTest extends TestCase
+class ThreadTest extends TestCase
 {
     /**
      * test set childMax
@@ -15,17 +15,17 @@ class TheadTest extends TestCase
     {
         $setMax = 8;
 
-        $thead = new Thead;
+        $thread = new Thread;
 
-        $thead->setChildMax($setMax);
+        $thread->setChildMax($setMax);
 
-        $reflection = new ReflectionClass(get_class($thead));
+        $reflection = new ReflectionClass(get_class($thread));
 
         $property = $reflection->getProperty('childMax');
 
         $property->setAccessible(true);
 
-        $childMax = $property->getValue($thead);
+        $childMax = $property->getValue($thread);
 
         $this->assertEquals($setMax, $childMax);
     }
@@ -47,9 +47,9 @@ class TheadTest extends TestCase
             $arguments[] = [random_int(1, 99), random_int(1, 99)];
         }
 
-        $thead = new Thead;
+        $thread = new Thread;
 
-        $thead->multiProcess($addMethod, $arguments);
+        $thread->multiProcess($addMethod, $arguments);
 
         $this->assertEquals(1, 1);
     }
