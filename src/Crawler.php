@@ -59,6 +59,9 @@ class Crawler
         foreach (self::$cookieFileCollect as $cookiesPath) {
             unlink($cookiesPath);
         }
+
+        // Init cookie file map
+        self::$cookieFileCollect = [];
     }
 
     /**
