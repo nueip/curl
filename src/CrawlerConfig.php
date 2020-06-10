@@ -7,6 +7,7 @@ namespace nueip\curl;
  *
  * @version  0.0.1
  * @author   Sean Lee
+ * @author   Gunter Chou
  *
  * @see      https://github.com/nueip/curl
  */
@@ -68,100 +69,121 @@ class CrawlerConfig
      * Set Title
      *
      * @param  string $title
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setTitle(string $title)
     {
         $this->config['title'] = $title;
+        return $this;
     }
 
     /**
      * Set Site
      *
      * @param  string $site
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setSite(string $site)
     {
         $this->config['site'] = preg_replace('/\/$/', '', $site);
+        return $this;
     }
 
     /**
      * Set Uri
      *
      * @param  string $uri
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setUri(string $uri)
     {
-        $this->config['uri'] = preg_replace('/^\//', '', $uri);;
+        $this->config['uri'] = preg_replace('/^\//', '', $uri);
+        return $this;
     }
 
     /**
      * Set Url
      *
      * @param  string $url
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setUrl(string $url)
     {
         $this->config['url'] = $url;
+        return $this;
     }
 
     /**
      * Set Type
      *
      * @param  string $type
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setType(string $type)
     {
         $type = strtolower($type);
         $this->config['type'] = isset($this->methodList[$type]) ? $type : null;
+        return $this;
     }
 
     /**
      * Set Data
      *
-     * @param  string $data
-     * @return void
+     * @param  array $data
+     * @return nueip\curl\CrawlerConfig
      */
     public function setData(array $data)
     {
         $this->config['data'] = $data;
+        return $this;
+    }
+
+    /**
+     * Append Data
+     *
+     * @param  array $data
+     * @return nueip\curl\CrawlerConfig
+     */
+    public function appendData(array $data)
+    {
+        $this->config['data'] = $data + $this->config['data'];
+        return $this;
     }
 
     /**
      * Set Cookies
      *
      * @param  array  $cookies
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setCookies(array $cookies)
     {
         $this->config['cookies'] = $cookies;
+        return $this;
     }
 
     /**
      * Set CurlOpt
      *
      * @param  array  $curlOpt
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setCurlOpt(array $curlOpt)
     {
         $this->config['curlOpt'] = $curlOpt;
+        return $this;
     }
 
     /**
      * Set FilePath
      *
      * @param  string|array $filePath
-     * @return void
+     * @return nueip\curl\CrawlerConfig
      */
     public function setFilePath($filePath)
     {
         $this->config['filePath'] = $filePath;
+        return $this;
     }
 
     /**
