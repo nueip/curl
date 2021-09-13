@@ -57,8 +57,8 @@ class Thread
             $haveResource = count($arguments);
 
             if ($haveResource) {
-                // 建立新進程前 暫停 5 * childMax ms 防止瞬間大量新增進程
-                usleep(5000 * $childMax);
+                // 建立新進程前 暫停 5 ms 防止瞬間大量新增進程
+                usleep(5000);
 
                 // 子進程編號
                 $childIndex++;
